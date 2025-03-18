@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "icp-trivia-backend": {
+      "main": "src/icp-trivia-backend/main.mo",
+      "type": "motoko"
+    },
+    "icp-trivia-frontend": {
+      "dependencies": [
+        "icp-trivia-backend"
+      ],
+      "source": [
+        "src/icp-trivia-frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "icp-trivia-frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
