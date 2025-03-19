@@ -2,12 +2,12 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #E5E7EB; // Gris suave de ICP
+  background-color: #E5E7EB;
 }
 
 .app {
   text-align: center;
-  padding: 20px;  
+  padding: 20px;
 
   .titulo {
     color: #0E1C4A;
@@ -15,7 +15,7 @@ body {
     font-weight: bold;
     animation: fadeIn 1s ease-in;
   }
-  
+
   @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }
@@ -39,14 +39,14 @@ body {
 
       .opcion-btn {
         padding: 10px;
-        background-color: #00A4FF; // Azul claro de ICP
-        color: #FFFFFF; // Blanco
+        background-color: #00A4FF;
+        color: #FFFFFF;
         border: none;
         border-radius: 5px;
         cursor: pointer;
 
         &:hover {
-          background-color: #0E1C4A; // Azul oscuro al hover
+          background-color: #0E1C4A;
         }
       }
     }
@@ -59,7 +59,7 @@ body {
 
     .nueva-pregunta-btn {
       padding: 10px;
-      background-color: #28a745; // Verde original, lo dejamos por ahora
+      background-color: #28a745;
       color: #FFFFFF;
       border: none;
       border-radius: 5px;
@@ -80,9 +80,16 @@ body {
     list-style: none;
     padding: 0;
 
-    li {
+    .jugador-nombre {
       margin: 10px 0;
       color: #0E1C4A;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #00A4FF, #0E1C4A);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 
@@ -92,12 +99,5 @@ body {
     border: 1px solid #0E1C4A;
     border-radius: 5px;
     width: 200px;
-  }
-
-  .avatar-select {
-    padding: 8px;
-    margin: 10px 5px;
-    border: 1px solid #0E1C4A;
-    border-radius: 5px;
   }
 }

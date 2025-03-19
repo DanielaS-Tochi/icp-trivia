@@ -27,13 +27,14 @@ function App() {
       return;
     }
 
-    // Verificar si el jugador existe
+    // Verificar si el nombre ya existe
     const puntosOpt = await icp_trivia_backend.obtenerPuntos(nombreJugador);
-    console.log("Puntos de", nombreJugador, ":", puntosOpt);
-    const puntos = puntosOpt.length > 0 ? puntosOpt[0] : null; // Extraer el valor de la opción
-    if (puntos === null) {
+    const puntos = puntosOpt.length > 0 ? puntosOpt[0] : null;
+    if (puntos !== null) {
+      // Nombre ya existe, seguir jugando
+    } else {
+      // Registrar nuevo jugador
       const registrado = await icp_trivia_backend.registrarJugador(nombreJugador);
-      console.log("Registro de", nombreJugador, ":", registrado);
       if (!registrado) {
         setResultado("Error al registrar el jugador.");
         return;
@@ -42,15 +43,17 @@ function App() {
     }
 
     const exito = await icp_trivia_backend.responderPregunta(nombreJugador, indice, respuesta);
-    console.log("Respuesta de", nombreJugador, ":", exito);
     setResultado(exito ? '¡Correcto!' : 'Incorrecto');
     await actualizarRanking();
   }
 
   async function actualizarRanking() {
     const rankingData = await icp_trivia_backend.verRanking();
-    console.log("Ranking recibido:", rankingData);
-    setRanking(rankingData);
+    // Ordenar por puntos (descendente) y tomar top 10
+    const sortedRanking = rankingData
+      .sort((a, b) => Number(b.puntos) - Number(a.puntos))
+      .slice(0, 10);
+    setRanking(sortedRanking);
   }
 
   return (
@@ -81,11 +84,11 @@ function App() {
       ) : (
         <p>Cargando pregunta...</p>
       )}
-      <h2>Ranking</h2>
+      <h2>Ranking Top 10</h2>
       <ul className="ranking">
         {ranking.map((jugador, i) => (
-          <li key={i}>
-            {jugador.nombre} - {Number(jugador.puntos)} puntos ({jugador.avatar})
+          <li key={i} className="jugador-nombre">
+            {jugador.nombre} - {Number(jugador.puntos)} puntos
           </li>
         ))}
       </ul>

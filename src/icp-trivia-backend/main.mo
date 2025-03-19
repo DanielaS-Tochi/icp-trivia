@@ -5,7 +5,6 @@ import Order "mo:base/Order";
 actor IcpTrivia {
   type Jugador = {
     nombre: Text;
-    avatar: Text;
     puntos: Nat;
   };
 
@@ -14,8 +13,6 @@ actor IcpTrivia {
     opciones: [Text];
     respuestaCorrecta: Nat;
   };
-
-  let avatares: [Text] = ["😎", "🚀", "🐱", "🦄", "🌟", "🎉", "🤓", "🐼", "🦁", "🌈"];
 
   stable var jugadores: [Jugador] = [];
   stable var preguntas: [Pregunta] = [
@@ -96,21 +93,25 @@ actor IcpTrivia {
     }
   ];
 
-  public query func obtenerAvatares() : async [Text] {
-    avatares
-  };
+  // Quitamos obtenerAvatares porque ya no usamos avatares
+  // public query func obtenerAvatares() : async [Text] { ... }
 
   public func registrarJugador(nombre: Text) : async Bool {
-  let nuevoJugador = { nombre = nombre; avatar = "🎲"; puntos = 0 }; // Avatar fijo
-  jugadores := Array.append(jugadores, [nuevoJugador]);
-  return true;
-};
+    // Chequear si el nombre ya existe
+    let existe = Array.find(jugadores, func (j: Jugador) : Bool { j.nombre == nombre }) != null;
+    if (existe) {
+      return true; // Ya existe, no hacemos nada
+    };
+    let nuevoJugador = { nombre = nombre; puntos = 0 };
+    jugadores := Array.append(jugadores, [nuevoJugador]);
+    return true;
+  };
 
   public shared func obtenerPregunta() : async (Nat, Pregunta) {
     let seed = await Random.blob();
     let random = Random.Finite(seed);
     let tamano = Array.size(preguntas); // 15 preguntas
-    let indiceAleatorio = switch (random.range(32)) { // Usamos 32 para cubrir más rango
+    let indiceAleatorio = switch (random.range(32)) {
       case (null) 0;
       case (?n) n % tamano; // Ajustamos a 0-14
     };
@@ -127,7 +128,7 @@ actor IcpTrivia {
       let nuevosJugadores = Array.map(jugadores, func (j: Jugador) : Jugador {
         if (j.nombre == nombre) {
           encontrado := true;
-          return { nombre = j.nombre; avatar = j.avatar; puntos = j.puntos + 1 };
+          return { nombre = j.nombre; puntos = j.puntos + 1 };
         } else {
           return j;
         };
@@ -136,7 +137,7 @@ actor IcpTrivia {
         jugadores := nuevosJugadores;
         return true;
       } else {
-        return false;
+        return false; // Jugador no encontrado
       };
     } else {
       return false;
@@ -144,18 +145,21 @@ actor IcpTrivia {
   };
 
   public query func obtenerPuntos(nombre: Text) : async ?Nat {
-    for (jugador in jugadores.vals()) {
-      if (jugador.nombre == nombre) {
-        return ?jugador.puntos;
-      };
+    switch (Array.find(jugadores, func (j: Jugador) : Bool { j.nombre == nombre })) {
+      case null { null };
+      case (?jugador) { ?jugador.puntos };
     };
-    return null;
   };
 
   public query func verRanking() : async [Jugador] {
     let ordenados = Array.sort(jugadores, func (a: Jugador, b: Jugador) : Order.Order {
       if (a.puntos > b.puntos) { #less } else if (a.puntos < b.puntos) { #greater } else { #equal }
     });
-    ordenados
+    // Limitar a los top 10
+    if (Array.size(ordenados) > 10) {
+      Array.subArray(ordenados, 0, 10)
+    } else {
+      ordenados
+    }
   };
 };
