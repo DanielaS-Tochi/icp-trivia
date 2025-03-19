@@ -2,12 +2,20 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  background-color: #ecc4fc;
 }
 
 .app {
   text-align: center;
   padding: 20px;
+
+  .nombre-input {
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+  }
 
   h1 {
     color: #333;

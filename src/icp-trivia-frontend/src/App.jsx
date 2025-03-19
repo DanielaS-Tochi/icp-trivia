@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { icp_trivia_backend } from '../../declarations/icp-trivia-backend';
+import { icp_trivia_backend } from 'declarations/icp-trivia-backend';
 import './index.scss';
 
 function App() {
@@ -7,9 +7,8 @@ function App() {
   const [indice, setIndice] = useState(null);
   const [resultado, setResultado] = useState('');
   const [ranking, setRanking] = useState([]);
-  const nombreJugador = "Ana"; // Podemos hacer esto dinámico después
+  const [nombreJugador, setNombreJugador] = useState("Ana"); // Ahora es dinámico
 
-  // Obtener una pregunta al cargar la página
   useEffect(() => {
     obtenerPregunta();
     actualizarRanking();
@@ -23,7 +22,7 @@ function App() {
   }
 
   async function responderPregunta(respuesta) {
-    if (indice === null) return;
+    if (indice === null || !nombreJugador) return;
     const exito = await icp_trivia_backend.responderPregunta(nombreJugador, indice, respuesta);
     setResultado(exito ? '¡Correcto!' : 'Incorrecto');
     actualizarRanking();
@@ -35,26 +34,35 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="app">
       <h1>ICP Trivia</h1>
+      <div>
+        <input
+          type="text"
+          value={nombreJugador}
+          onChange={(e) => setNombreJugador(e.target.value)}
+          placeholder="Tu nombre"
+          className="nombre-input"
+        />
+      </div>
       {pregunta ? (
-        <>
-          <p>{pregunta.texto}</p>
+        <div className="pregunta-container">
+          <p className="pregunta-texto">{pregunta.texto}</p>
           <div className="opciones">
             {pregunta.opciones.map((opcion, i) => (
-              <button key={i} onClick={() => responderPregunta(i)}>
+              <button key={i} onClick={() => responderPregunta(i)} className="opcion-btn">
                 {opcion}
               </button>
             ))}
           </div>
-          <p>{resultado}</p>
-          <button onClick={obtenerPregunta}>Nueva Pregunta</button>
-        </>
+          <p className="resultado">{resultado}</p>
+          <button onClick={obtenerPregunta} className="nueva-pregunta-btn">Nueva Pregunta</button>
+        </div>
       ) : (
         <p>Cargando pregunta...</p>
       )}
       <h2>Ranking</h2>
-      <ul>
+      <ul className="ranking">
         {ranking.map((jugador, i) => (
           <li key={i}>
             {jugador.nombre} - {jugador.puntos} puntos ({jugador.avatar})
