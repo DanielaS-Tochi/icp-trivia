@@ -15,7 +15,7 @@ actor IcpTrivia {
     respuestaCorrecta: Nat;
   };
 
-let avatares: [Text] = ["😎", "🚀", "🐱", "🦄", "🌟", "🎉", "🤓", "🐼", "🦁", "🌈"];
+  let avatares: [Text] = ["😎", "🚀", "🐱", "🦄", "🌟", "🎉", "🤓", "🐼", "🦁", "🌈"];
 
   stable var jugadores: [Jugador] = [];
   stable var preguntas: [Pregunta] = [
@@ -101,7 +101,7 @@ let avatares: [Text] = ["😎", "🚀", "🐱", "🦄", "🌟", "🎉", "🤓", 
   };
 
   public func registrarJugador(nombre: Text, indiceAvatar: Nat) : async Bool {
-    if (indiceAvatar >= 3) {
+    if (indiceAvatar >= Array.size(avatares)) {
       return false;
     };
     let nuevoJugador = { nombre = nombre; avatar = avatares[indiceAvatar]; puntos = 0 };
@@ -112,16 +112,16 @@ let avatares: [Text] = ["😎", "🚀", "🐱", "🦄", "🌟", "🎉", "🤓", 
   public shared func obtenerPregunta() : async (Nat, Pregunta) {
     let seed = await Random.blob();
     let random = Random.Finite(seed);
-    let tamano: Nat8 = 2; // Número de preguntas
-    let indiceAleatorio = switch (random.range(tamano)) {
+    let tamano = Array.size(preguntas); // 15 preguntas
+    let indiceAleatorio = switch (random.range(32)) { // Usamos 32 para cubrir más rango
       case (null) 0;
-      case (?n) n;
+      case (?n) n % tamano; // Ajustamos a 0-14
     };
     (indiceAleatorio, preguntas[indiceAleatorio])
   };
 
   public func responderPregunta(nombre: Text, indicePregunta: Nat, respuesta: Nat) : async Bool {
-    if (indicePregunta >= 2) {
+    if (indicePregunta >= Array.size(preguntas)) {
       return false;
     };
     let pregunta = preguntas[indicePregunta];
