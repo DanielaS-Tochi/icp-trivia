@@ -2,23 +2,23 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #ecc4fc;
+  background-color: #E5E7EB; // Gris suave de ICP
 }
 
 .app {
   text-align: center;
-  padding: 20px;
+  padding: 20px;  
 
-  .nombre-input {
-    padding: 8px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 200px;
+  .titulo {
+    color: #0E1C4A;
+    font-size: 2.5em;
+    font-weight: bold;
+    animation: fadeIn 1s ease-in;
   }
-
-  h1 {
-    color: #333;
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
   }
 
   .pregunta-container {
@@ -27,6 +27,7 @@ body {
     .pregunta-texto {
       font-size: 1.2em;
       margin: 20px 0;
+      color: #0E1C4A;
     }
 
     .opciones {
@@ -38,14 +39,14 @@ body {
 
       .opcion-btn {
         padding: 10px;
-        background-color: #007bff;
-        color: white;
+        background-color: #00A4FF; // Azul claro de ICP
+        color: #FFFFFF; // Blanco
         border: none;
         border-radius: 5px;
         cursor: pointer;
 
         &:hover {
-          background-color: #0056b3;
+          background-color: #0E1C4A; // Azul oscuro al hover
         }
       }
     }
@@ -53,12 +54,13 @@ body {
     .resultado {
       margin: 20px 0;
       font-weight: bold;
+      color: #0E1C4A;
     }
 
     .nueva-pregunta-btn {
       padding: 10px;
-      background-color: #28a745;
-      color: white;
+      background-color: #28a745; // Verde original, lo dejamos por ahora
+      color: #FFFFFF;
       border: none;
       border-radius: 5px;
       cursor: pointer;
@@ -71,7 +73,7 @@ body {
 
   h2 {
     margin-top: 40px;
-    color: #333;
+    color: #0E1C4A;
   }
 
   .ranking {
@@ -80,6 +82,22 @@ body {
 
     li {
       margin: 10px 0;
+      color: #0E1C4A;
     }
+  }
+
+  .nombre-input {
+    padding: 8px;
+    margin: 10px 5px;
+    border: 1px solid #0E1C4A;
+    border-radius: 5px;
+    width: 200px;
+  }
+
+  .avatar-select {
+    padding: 8px;
+    margin: 10px 5px;
+    border: 1px solid #0E1C4A;
+    border-radius: 5px;
   }
 }

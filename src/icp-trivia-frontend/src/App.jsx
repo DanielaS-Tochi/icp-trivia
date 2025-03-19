@@ -7,7 +7,7 @@ function App() {
   const [indice, setIndice] = useState(null);
   const [resultado, setResultado] = useState('');
   const [ranking, setRanking] = useState([]);
-  const [nombreJugador, setNombreJugador] = useState("Ana"); // Ahora es dinámico
+  const [nombreJugador, setNombreJugador] = useState("");
 
   useEffect(() => {
     obtenerPregunta();
@@ -21,21 +21,41 @@ function App() {
     setResultado('');
   }
 
-  async function responderPregunta(respuesta) {
-    if (indice === null || !nombreJugador) return;
+  async function registrarYResponder(respuesta) {
+    if (indice === null || !nombreJugador) {
+      setResultado("Por favor, ingresá un nombre.");
+      return;
+    }
+
+    // Verificar si el jugador existe
+    const puntosOpt = await icp_trivia_backend.obtenerPuntos(nombreJugador);
+    console.log("Puntos de", nombreJugador, ":", puntosOpt);
+    const puntos = puntosOpt.length > 0 ? puntosOpt[0] : null; // Extraer el valor de la opción
+    if (puntos === null) {
+      const registrado = await icp_trivia_backend.registrarJugador(nombreJugador);
+      console.log("Registro de", nombreJugador, ":", registrado);
+      if (!registrado) {
+        setResultado("Error al registrar el jugador.");
+        return;
+      }
+      await actualizarRanking();
+    }
+
     const exito = await icp_trivia_backend.responderPregunta(nombreJugador, indice, respuesta);
+    console.log("Respuesta de", nombreJugador, ":", exito);
     setResultado(exito ? '¡Correcto!' : 'Incorrecto');
-    actualizarRanking();
+    await actualizarRanking();
   }
 
   async function actualizarRanking() {
     const rankingData = await icp_trivia_backend.verRanking();
+    console.log("Ranking recibido:", rankingData);
     setRanking(rankingData);
   }
 
   return (
     <div className="app">
-      <h1>ICP Trivia</h1>
+      <h1 className="titulo">ICP Trivia</h1>
       <div>
         <input
           type="text"
@@ -50,7 +70,7 @@ function App() {
           <p className="pregunta-texto">{pregunta.texto}</p>
           <div className="opciones">
             {pregunta.opciones.map((opcion, i) => (
-              <button key={i} onClick={() => responderPregunta(i)} className="opcion-btn">
+              <button key={i} onClick={() => registrarYResponder(i)} className="opcion-btn">
                 {opcion}
               </button>
             ))}
@@ -65,7 +85,7 @@ function App() {
       <ul className="ranking">
         {ranking.map((jugador, i) => (
           <li key={i}>
-            {jugador.nombre} - {jugador.puntos} puntos ({jugador.avatar})
+            {jugador.nombre} - {Number(jugador.puntos)} puntos ({jugador.avatar})
           </li>
         ))}
       </ul>

@@ -100,14 +100,11 @@ actor IcpTrivia {
     avatares
   };
 
-  public func registrarJugador(nombre: Text, indiceAvatar: Nat) : async Bool {
-    if (indiceAvatar >= Array.size(avatares)) {
-      return false;
-    };
-    let nuevoJugador = { nombre = nombre; avatar = avatares[indiceAvatar]; puntos = 0 };
-    jugadores := Array.append(jugadores, [nuevoJugador]);
-    return true;
-  };
+  public func registrarJugador(nombre: Text) : async Bool {
+  let nuevoJugador = { nombre = nombre; avatar = "🎲"; puntos = 0 }; // Avatar fijo
+  jugadores := Array.append(jugadores, [nuevoJugador]);
+  return true;
+};
 
   public shared func obtenerPregunta() : async (Nat, Pregunta) {
     let seed = await Random.blob();
