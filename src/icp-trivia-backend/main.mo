@@ -92,15 +92,12 @@ actor IcpTrivia {
       respuestaCorrecta = 1;
     }
   ];
-
-  // Quitamos obtenerAvatares porque ya no usamos avatares
-  // public query func obtenerAvatares() : async [Text] { ... }
-
+  
   public func registrarJugador(nombre: Text) : async Bool {
-    // Chequear si el nombre ya existe
+    
     let existe = Array.find(jugadores, func (j: Jugador) : Bool { j.nombre == nombre }) != null;
     if (existe) {
-      return true; // Ya existe, no hacemos nada
+      return true; 
     };
     let nuevoJugador = { nombre = nombre; puntos = 0 };
     jugadores := Array.append(jugadores, [nuevoJugador]);
@@ -113,7 +110,7 @@ actor IcpTrivia {
     let tamano = Array.size(preguntas); // 15 preguntas
     let indiceAleatorio = switch (random.range(32)) {
       case (null) 0;
-      case (?n) n % tamano; // Ajustamos a 0-14
+      case (?n) n % tamano; 
     };
     (indiceAleatorio, preguntas[indiceAleatorio])
   };
@@ -137,7 +134,7 @@ actor IcpTrivia {
         jugadores := nuevosJugadores;
         return true;
       } else {
-        return false; // Jugador no encontrado
+        return false; 
       };
     } else {
       return false;
@@ -155,7 +152,7 @@ actor IcpTrivia {
     let ordenados = Array.sort(jugadores, func (a: Jugador, b: Jugador) : Order.Order {
       if (a.puntos > b.puntos) { #less } else if (a.puntos < b.puntos) { #greater } else { #equal }
     });
-    // Limitar a los top 10
+    
     if (Array.size(ordenados) > 10) {
       Array.subArray(ordenados, 0, 10)
     } else {
