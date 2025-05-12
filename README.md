@@ -131,7 +131,7 @@ Para saber más sobre cómo trabajar con ICP, consultá la documentación dispon
 
 # Agradecimientos
 
-Este proyecto fue posible gracias al Bootcamp de ICP México y su equipo que siempre estuveron dispuestos para compartir sus conocimientos y ayudarnos a despejar dudas. También me apoyé en **Grok**, una IA desarrollada por xAI, que me asistió en la resolución de errores, optimización del código y diseño del flujo del juego. ¡Gracias ICP México y Grok, por acompañarmd en mi primera aventura con Motoko e ICP!
+Este proyecto fue posible gracias al Bootcamp de ICP México y su equipo que siempre estuvo dispuesto para compartir sus conocimientos y ayudarnos a despejar dudas. También me apoyé en **Grok**, una IA desarrollada por xAI, que me asistió en la resolución de errores, optimización del código y diseño del flujo del juego. ¡Gracias ICP México y Grok, por acompañarme en mi primera aventura con Motoko e ICP!
 
 ## Licencia
 MIT License - Ver LICENSE.
